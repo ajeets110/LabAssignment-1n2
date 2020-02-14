@@ -12,5 +12,6 @@ public class UpdateMap extends AppCompatActivity {
         setContentView(R.layout.updatemap);
 
 
+
     }
 }

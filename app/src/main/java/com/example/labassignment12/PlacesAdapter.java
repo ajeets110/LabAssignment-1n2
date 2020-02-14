@@ -2,7 +2,10 @@ package com.example.labassignment12;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
+import android.location.Location;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +19,21 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
 import java.util.Arrays;
 import java.util.List;
+
+import static androidx.core.content.ContextCompat.startActivity;
 
 public class PlacesAdapter extends ArrayAdapter {
 
@@ -25,6 +41,17 @@ public class PlacesAdapter extends ArrayAdapter {
     int layoutRes;
     DatabaseHelper mDatabase;
     List<Places> listPlace;
+
+    GoogleMap mMap;
+    Places dest;
+
+    // get user location
+    private FusedLocationProviderClient fusedLocationProviderClient;
+    LocationCallback locationCallback;
+    LocationRequest locationRequest;
+    final int RADIUS = 1500;
+    LatLng customMarker;
+    LatLng currentLocation;
 
 
     public PlacesAdapter(@NonNull Context mcontext, int layoutRes, List<Places> listPlace, DatabaseHelper mDatabase) {
@@ -61,10 +88,55 @@ public class PlacesAdapter extends ArrayAdapter {
                 deletePlace(places);
 
             }
+
         });
 
+        view.findViewById(R.id.layoutid).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dest = places;
+
+            }
+
+        });
+
+
+
         return view;
+
+
     }
+
+
+
+    private void navigate(final Places destination){
+
+        GoogleMap mMap = null;
+
+        Object[] dataTransfer;
+        String url;
+        dataTransfer = new Object[4];
+        url = getDirectionUrl();
+        dataTransfer[0] = mMap;
+        dataTransfer[1] = url;
+        dataTransfer[2] = destination;
+        dataTransfer[3] = new LatLng(currentLocation.latitude,currentLocation.longitude);
+        FetchDirections getDirectionsData = new FetchDirections();
+        getDirectionsData.execute(dataTransfer);
+
+
+    }
+
+    private String getDirectionUrl() {
+        StringBuilder googleDirectionUrl = new StringBuilder("https://maps.googleapis.com/maps/api/directions/json?");
+        googleDirectionUrl.append("origin="+currentLocation.latitude+","+currentLocation.longitude);
+        googleDirectionUrl.append("&destination="+dest.latitude+","+dest.longitude);
+        googleDirectionUrl.append("&key="+ mcontext.getString(R.string.api_key_places));
+        Log.d("", "getDirectionUrl: "+googleDirectionUrl);
+        return googleDirectionUrl.toString();
+    }
+
 
     private void deletePlace(final Places places) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mcontext);
@@ -111,5 +183,36 @@ public class PlacesAdapter extends ArrayAdapter {
         notifyDataSetChanged();
     }
 
+    private void getUserLocation() {
+        locationRequest = new LocationRequest();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(5000);
+        locationRequest.setFastestInterval(3000);
+        locationRequest.setSmallestDisplacement(10);
+        setHomeMarker();
+    }
+
+    private void setHomeMarker() {
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                for (Location location : locationResult.getLocations()) {
+                    LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                    currentLocation = userLocation;
+                    CameraPosition cameraPosition = CameraPosition.builder()
+                            .target(userLocation)
+                            .zoom(15)
+                            .bearing(0)
+                            .tilt(45)
+                            .build();
+                    mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                    mMap.clear();
+                    mMap.addMarker(new MarkerOptions().position(userLocation)
+                            .title("You are here"));
+
+                }
+            }
+        };
+    }
 
 }

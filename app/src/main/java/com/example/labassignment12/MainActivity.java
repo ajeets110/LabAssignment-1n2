@@ -65,7 +65,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     LatLng customMarker;
     LatLng currentLocation;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -255,7 +254,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     public void btnClick(View view) {
-        Object[] dataTransfer = new Object[2];;
+        Object[] dataTransfer = new Object[2];
         String url;
         NearbyPlaces getNearbyPlaces = new NearbyPlaces();
 
@@ -308,13 +307,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
                break;
-
-            case R.id.layoutid:
-
-                Intent m1Intent = new Intent(this, MainActivity.class);
-                startActivity(m1Intent);
-//                setMarker(currentLocation.latitude, currentLocation.longitude);
-
         }
     }
 
@@ -332,7 +324,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         placeUrl.append("location="+latitude+","+longitude);
         placeUrl.append("&radius="+RADIUS);
         placeUrl.append("&type="+nearbyPlace);
-        placeUrl.append("&key=AIzaSyB45lwuNXNnXYsc3WHA1QyJKIkxqE-Rb7A");
+        placeUrl.append("&key="+getString(R.string.api_key_places));
         System.out.println(placeUrl.toString());
         return placeUrl.toString();
     }
