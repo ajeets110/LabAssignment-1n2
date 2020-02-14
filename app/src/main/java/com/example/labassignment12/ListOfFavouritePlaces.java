@@ -12,13 +12,13 @@ import java.util.List;
 public class ListOfFavouritePlaces extends AppCompatActivity {
 
     DatabaseHelper mDatabase;
-    List<ClassOfPlaces> listPlace;
+    List<Places> listPlace;
     ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list0f_favt_places);
+        setContentView(R.layout.activity_favourite_places_list);
         listView = findViewById(R.id.favrt_places);
         listPlace = new ArrayList<>();
         mDatabase = new DatabaseHelper(this);
@@ -40,11 +40,11 @@ public class ListOfFavouritePlaces extends AppCompatActivity {
             do{
 
 
-                listPlace.add(new ClassOfPlaces(cursor.getInt(0),
-                        cursor.getString(1),cursor.getString(2),
-                        cursor.getDouble(3),
-                        cursor.getDouble(4),cursor.getString(5)
-                        ));
+                listPlace.add(new Places(cursor.getString(0),cursor.getString(1),
+                        cursor.getString(2),
+                        cursor.getDouble(3),cursor.getDouble(4)
+                ));
+
 
             }while (cursor.moveToNext());
 

@@ -17,7 +17,6 @@ public class NearbyPlaces extends AsyncTask<Object,String,String > {
     String place_data,url_location;
     GoogleMap map;
 
-
     @Override
     protected String doInBackground(Object... objects) {
         map = (GoogleMap) objects[0];
@@ -25,11 +24,10 @@ public class NearbyPlaces extends AsyncTask<Object,String,String > {
 
         FetchUrl url = new FetchUrl();
         try {
-            place_data = url.ReadUrl(url_location);
+            place_data = url.readUrl(url_location);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
 
         return  place_data;
     }
@@ -43,7 +41,6 @@ public class NearbyPlaces extends AsyncTask<Object,String,String > {
         showNearByPlaces(placeList);
 
     }
-
 
     private void showNearByPlaces(List<HashMap<String,String>> placesList){
         for (int i = 0;i<placesList.size();i++) {

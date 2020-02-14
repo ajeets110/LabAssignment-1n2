@@ -1,15 +1,14 @@
 package com.example.labassignment12;
 
-public class ClassOfPlaces {
+public class Places {
 
-int id ;
+ int id ;
  String address,nameoffavrtplace,date;
  Double latitude,longitude;
 
-    public ClassOfPlaces(int id, String address, String nameoffavrtplace, Double longitude, Double latitude, String date) {
-        this.id = id;
+    public Places(String favt_name, String date, String address, Double longitude, Double latitude) {
+        this.nameoffavrtplace = favt_name;
         this.address = address;
-        this.nameoffavrtplace = nameoffavrtplace;
         this.latitude = latitude;
         this.longitude = longitude;
         this.date = date;

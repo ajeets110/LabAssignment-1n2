@@ -32,13 +32,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String sql = "CREATE TABLE " + TABLE_NAME + "(" +
-                COLUMN_ID + " INTEGER NOT NULL CONSTRAINT employee_pk PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_ID + " INTEGER NOT NULL CONSTRAINT places_id PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_NAME + " varchar(200) NOT NULL,"+
                 COLUMN_ADDRESS + " varchar(200) , " +
                 COLUMN_DATE + " varchar(200) NOT NULL," +
                 COLUMN_LATITUDE + " double NOT NULL, " +
                 COLUMN_LONGITUDE + " double NOT NULL);";
-
 
         db.execSQL(sql);
 
@@ -52,7 +51,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    boolean addFavrtPlaces( String nameoffavrtplace,String date,String address, double latitude, double longitude) {
+    boolean addFavouritePlaces(String favtName, String date, String address, double latitude, double longitude) {
 
         //inorder to insert ,we need writable database;
         //this method returns a sqlite instance;
@@ -62,7 +61,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
         //this first argument of the put method is the columnn name and second value
 
-        cv.put(COLUMN_NAME,nameoffavrtplace);
+        cv.put(COLUMN_NAME,favtName);
         cv.put(COLUMN_ADDRESS,address);
         cv.put(COLUMN_LATITUDE,latitude);
         cv.put(COLUMN_LONGITUDE,longitude);
