@@ -102,6 +102,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
+
+
         if (!checkPermission()) {
             requestPermission();
         }
@@ -218,7 +220,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         switch (view.getId()) {
             case R.id.btn_addfavrt:
-                Intent mIntent = new Intent(this, AddFavouritesActivity.class);
+                Intent mIntent = new Intent(this, ListOfFavouritePlaces.class);
                 startActivity(mIntent);
                 break;
 
