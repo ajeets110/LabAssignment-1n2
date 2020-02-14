@@ -1,10 +1,12 @@
 package com.example.labassignment12;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -30,6 +32,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
@@ -174,14 +177,45 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setMessage("Do you want to add the place in Favourites");
+                builder.setCancelable(true);
+                builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        onMarkerClick = true;
+                        addressOfPlaces(customMarker);
+                    }
+                });
+                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        onMarkerClick = false;
+                    }
+                });
+
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+                return true;
+            }
+        });
+
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
             public void onMapLongClick(LatLng latLng) {
                 customMarker = latLng;
                 setMarker(latLng);
                 addressOfPlaces(customMarker);
+
+
             }
         });
+
     }
 
     private void setMarker(LatLng latLng){
@@ -204,7 +238,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 if (mDatabase.addFavouritePlaces(addresses.get(0).getLocality(),addDate,addresses.get(0).getAddressLine(0),latLng.latitude,latLng.longitude)){
                     Toast.makeText(MainActivity.this, "places:"+addresses.get(0).getAddressLine(0), Toast.LENGTH_SHORT).show();
                 }else {
-                    Toast.makeText(MainActivity.this, "places NOT FOUND:", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Place Not Found :'( ", Toast.LENGTH_SHORT).show();
                 }
             }
 
