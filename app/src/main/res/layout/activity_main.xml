@@ -82,7 +82,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="#065"
-            android:text="Add Favourite"
+            android:text="Favourites"
             android:onClick="btnClick"
             android:textColor="#fff"
             android:layout_marginLeft="0.5dp"
@@ -104,12 +104,12 @@
             />
 
         <Spinner
-            android:id="@+id/choosethemap"
+            android:id="@+id/selectMapType"
             android:layout_width="167dp"
             android:layout_height="match_parent"
             android:background="#065"
             android:entries="@array/typesofmaps"
-            android:text="ChooseMapType"
+            android:text="Map Type"
             android:textColor="#fff"/>
 
 
