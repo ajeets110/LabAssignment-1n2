@@ -19,7 +19,6 @@ public class ListOfFavouritePlaces extends AppCompatActivity {
     DatabaseHelper mDatabase;
     List<Places> listPlace;
     ListView listView;
-    Context context;
     Button delete;
 
     @Override
@@ -31,12 +30,6 @@ public class ListOfFavouritePlaces extends AppCompatActivity {
         listPlace = new ArrayList<>();
         mDatabase = new DatabaseHelper(this);
         loadPlaces();
-
-
-
-        PlacesAdapter placesAdaptor = new PlacesAdapter(this,R.layout.list_layout_favrtplaces,listPlace,mDatabase);
-        listView.setAdapter(placesAdaptor);
-
 
     }
 
@@ -50,7 +43,7 @@ public class ListOfFavouritePlaces extends AppCompatActivity {
             do{
 
 
-                listPlace.add(new Places(cursor.getString(0),cursor.getString(1),
+                listPlace.add(new Places(cursor.getInt(0), cursor.getString(0),cursor.getString(1),
                         cursor.getString(2),
                         cursor.getDouble(3),cursor.getDouble(4)
                 ));
@@ -63,8 +56,8 @@ public class ListOfFavouritePlaces extends AppCompatActivity {
 
 
         // Custom Adaptor
-//        PlacesAdapter placesAdaptor = new PlacesAdapter(this,R.layout.list_layout_favrtplaces,listPlace,mDatabase);
-//        listView.setAdapter(placesAdaptor);
+        PlacesAdapter placesAdaptor = new PlacesAdapter(this,R.layout.list_layout_favrtplaces,listPlace,mDatabase);
+        listView.setAdapter(placesAdaptor);
 
     }
 

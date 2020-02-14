@@ -6,12 +6,15 @@ public class Places {
  String address,nameoffavrtplace,date;
  Double latitude,longitude;
 
-    public Places(String favt_name, String date, String address, Double longitude, Double latitude) {
+    public Places(int id, String favt_name, String date, String address, Double longitude, Double latitude) {
+
+        this.id = id;
         this.nameoffavrtplace = favt_name;
         this.address = address;
         this.latitude = latitude;
         this.longitude = longitude;
         this.date = date;
+
     }
 
     public int getId() {

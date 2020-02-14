@@ -73,7 +73,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     Cursor getAllPlaces(){
         SQLiteDatabase sqLiteDatabase =getReadableDatabase();
+
         return sqLiteDatabase.rawQuery("SELECT * FROM "+TABLE_NAME,null);
+
 
     }
 
@@ -94,9 +96,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     boolean deletePlaces(int id){
-        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
-        return  sqLiteDatabase.delete(TABLE_NAME,COLUMN_ID+" = ? ",new String[]{String.valueOf(id)}) >0;
 
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        // the delete method
+        return sqLiteDatabase.delete(TABLE_NAME, COLUMN_ID + "=?", new String[]{String.valueOf(id)}) > 0;
     }
 
 
