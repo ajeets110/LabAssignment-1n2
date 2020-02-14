@@ -13,10 +13,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     //using Constant for column names
 
     private static final String DATABASE_NAME = "FavouritePlaces";
-
     private static final int DATABASE_VERSION = 1;
     private static final String TABLE_NAME = "places";
-
     private static final String COLUMN_ID = "id";
     private static final String COLUMN_ADDRESS = "address";
     private static final String COLUMN_NAME = "nameoffavrtplace";
@@ -78,6 +76,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return sqLiteDatabase.rawQuery("SELECT * FROM "+TABLE_NAME,null);
 
     }
+
     boolean updatePlaces(int id,String address, String nameoffavrtplace, double latitude, double longitude){
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
 
@@ -89,8 +88,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_ADDRESS,address);
         cv.put(COLUMN_LATITUDE,latitude);
         cv.put(COLUMN_LONGITUDE,longitude);
-
-
 
         //returns the affected num of rows;
         return  sqLiteDatabase.update(TABLE_NAME,cv,COLUMN_ID+" = ? ",new String[]{String.valueOf(id)}) >0 ;

@@ -6,12 +6,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
@@ -34,6 +37,8 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -59,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     final int RADIUS = 1500;
     LatLng customMarker;
     LatLng currentLocation;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,6 +153,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                             .tilt(45)
                             .build();
                     mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                    mMap.clear();
                     mMap.addMarker(new MarkerOptions().position(userLocation)
                             .title("You are here"));
 
@@ -174,36 +181,37 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setMessage("Do you want to add the place in Favourites");
-                builder.setCancelable(true);
-                builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        onMarkerClick = true;
-                        addressOfPlaces(customMarker);
-                    }
-                });
-                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                        onMarkerClick = false;
-                    }
-                });
-
-                AlertDialog alertDialog = builder.create();
-                alertDialog.show();
-                return true;
-            }
-        });
+//        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+//            @Override
+//            public boolean onMarkerClick(Marker marker) {
+//                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+//                builder.setMessage("Do you want to add this place in Favourites");
+//                builder.setCancelable(true);
+//                builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//
+//                        onMarkerClick = true;
+//                        addressOfPlaces(customMarker);
+//                    }
+//                });
+//                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.cancel();
+//                        onMarkerClick = false;
+//                    }
+//                });
+//
+//                AlertDialog alertDialog = builder.create();
+//                alertDialog.show();
+//                return true;
+//            }
+//        });
 
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
@@ -219,7 +227,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void setMarker(LatLng latLng){
-        MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("your Destination")
+        MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("Your Destination")
                 .snippet("you are going here").draggable(true).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
         mMap.addMarker(markerOptions);
 
@@ -294,6 +302,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 FetchDirections getDirectionsData = new FetchDirections();
                 getDirectionsData.execute(dataTransfer);
                 break;
+
+            case R.id.btn_clear:
+
+               mMap.clear();
+
+               fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
+               break;
+
         }
     }
 
@@ -315,6 +331,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         System.out.println(placeUrl.toString());
         return placeUrl.toString();
     }
+
 }
 
 
