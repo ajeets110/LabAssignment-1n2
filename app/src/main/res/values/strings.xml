@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">LabAssignment1&amp;2</string>
+    <string name="key">AIzaSyD5fh1vgfEjSTuyKWBDs8fPk90jOMfD7hQ</string>
+    <string-array name="typesofmaps">
+        <item>Choose Map Type</item>
+        <item>Satellite</item>
+        <item>Hybrid</item>
+        <item>Default</item>
+
+    </string-array>
+</resources>
