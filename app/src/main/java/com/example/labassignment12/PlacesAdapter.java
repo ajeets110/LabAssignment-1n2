@@ -110,60 +110,6 @@ public class PlacesAdapter extends ArrayAdapter {
 
         notifyDataSetChanged();
     }
-    private void updatePlace(Places places)
-    android.app.AlertDialog.Builder alert = new android.app.AlertDialog.Builder(mcontext);
-    LayoutInflater inflater = LayoutInflater.from(mcontext);
-    View v = inflater.inflate(R.layout.dialog_layout_update_employee, null);
-        alert.setView(v);
-    final android.app.AlertDialog alertDialog = alert.create();
-        alertDialog.show();
 
-    final EditText etName = v.findViewById(R.id.editTextName);
-    final EditText etSalary = v.findViewById(R.id.editTextSalary);
-    final Spinner spinner = v.findViewById(R.id.spinnerDepartment);
 
-    String[] departmentsArray = mContext.getResources().getStringArray(R.array.departments);
-    int position = Arrays.asList(departmentsArray).indexOf(employee.getDept());
-
-        etName.setText(employee.getName());
-        etSalary.setText(String.valueOf(employee.getSalary()));
-        spinner.setSelection(position);
-
-        v.findViewById(R.id.btn_update_employee).setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            String name = etName.getText().toString().trim();
-            String salary = etSalary.getText().toString().trim();
-            String dept = spinner.getSelectedItem().toString();
-
-            if (name.isEmpty()) {
-                etName.setError("Name field is mandatory!");
-                etName.requestFocus();
-                return;
-            }
-
-            if (salary.isEmpty()) {
-                etSalary.setError("Salary field is mandatory!");
-                etSalary.requestFocus();
-                return;
-            }
-
-                /*
-                String sql = "UPDATE employees SET name = ?, department = ?, salary = ? WHERE id = ?";
-                mDatabase.execSQL(sql, new String[]{name, dept, salary, String.valueOf(employee.getId())});
-                Toast.makeText(mContext,"employee updated", Toast.LENGTH_SHORT).show();
-
-                 */
-
-            if (mDatabase.updateEmployee(employee.getId(), name, dept, Double.parseDouble(salary))) {
-                Toast.makeText(mContext,"employee updated", Toast.LENGTH_SHORT).show();
-                loadEmployees();
-            } else
-                Toast.makeText(mContext,"employee not updated", Toast.LENGTH_SHORT).show();
-
-//                loadEmployees();
-            alertDialog.dismiss();
-        }
-    });
-}
 }

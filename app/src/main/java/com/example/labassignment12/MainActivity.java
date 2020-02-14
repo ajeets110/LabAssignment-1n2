@@ -73,7 +73,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         initMap();
         getUserLocation();
         maptype = findViewById(R.id.selectMapType);
-
         maptype.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -309,6 +308,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
                break;
+
+            case R.id.layoutid:
+
+                Intent m1Intent = new Intent(this, MainActivity.class);
+                startActivity(m1Intent);
+//                setMarker(currentLocation.latitude, currentLocation.longitude);
 
         }
     }

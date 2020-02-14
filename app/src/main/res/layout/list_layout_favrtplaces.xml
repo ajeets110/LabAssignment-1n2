@@ -12,8 +12,10 @@
         android:padding="15dp">
 
         <LinearLayout
+            android:id="@+id/layoutid"
             android:layout_width="230dp"
             android:layout_height="wrap_content"
+            android:onClick="btnClick"
             android:orientation="vertical">
 
             <TextView
